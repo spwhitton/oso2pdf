@@ -3,7 +3,7 @@ version:             0.1.0
 synopsis:            Better conversion of Oxford Scholarship Online material to PDF
 description:         Please see README.md when I write it
 homepage:            https://github.com/spwhitton/oso2pdf
-license:             GPL3
+license:             GPL-3
 license-file:        LICENSE
 author:              Sean Whitton
 maintainer:          spwhitton@spwhitton.name
