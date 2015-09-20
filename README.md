@@ -34,6 +34,9 @@ Runtime dependencies:
 
 - a working installation of pandoc
 - some XeLaTeX compatible font, such as Liberation Serif
+- my
+  [~/.pandoc/templates/pessay.latex](https://github.com/spwhitton/dotfiles/blob/master/.pandoc/templates/pessay.latex)
+- my [~/texmf/tex/latex/pessay/pessay.cls](https://github.com/spwhitton/dotfiles/blob/master/texmf/tex/latex/pessay/pessay.cls)
 
 To build and install, first
 [install stack](https://github.com/commercialhaskell/stack), and then
