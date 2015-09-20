@@ -33,7 +33,8 @@ conversion; the default setting is
 Runtime dependencies:
 
 - a working installation of pandoc
-- some XeLaTeX compatible font, such as Liberation Serif
+- a working LaTeX installation, including XeLaTeX
+- some XeLaTeX-compatible font, such as Liberation Serif
 - my
   [~/.pandoc/templates/pessay.latex](https://github.com/spwhitton/dotfiles/blob/master/.pandoc/templates/pessay.latex)
 - my [~/texmf/tex/latex/pessay/pessay.cls](https://github.com/spwhitton/dotfiles/blob/master/texmf/tex/latex/pessay/pessay.cls)
