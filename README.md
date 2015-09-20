@@ -45,3 +45,8 @@ To build and install, first
     $ git clone git@github.com:spwhitton/oso2pdf.git
     $ cd oso2pdf
     $ stack install
+
+## Bugs
+
+Please report bugs by e-mail to `<spwhitton@spwhitton.name>` or
+`<spwhitton@email.arizona.edu>`.
