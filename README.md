@@ -22,8 +22,9 @@ Online to an HTML file, e.g. `my_chapter.html`.  Then run the command
 
     $ oso2pdf my_chapter.html
 
-which will produce a file `my_chapter.pdf`.  Optionally, specify the
-font for the conversion; the default setting is
+which will produce files `my_chapter-content.pdf` and
+`my_chapter-notes.pdf`.  Optionally, specify the font for the
+conversion; the default setting is
 
     $ oso2pdf --font="Liberation Serif" my_chapter.html
 
