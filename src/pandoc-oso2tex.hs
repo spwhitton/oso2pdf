@@ -32,6 +32,7 @@ instance Monoid Page where
     (Page n xs) `mappend` (Page _ ys) = Page n (xs ++ ys)
 
 pagesToBlocks :: [Page] -> [Block]
+pagesToBlocks [Page _ xs] = xs
 pagesToBlocks ps@( _ : (Page n _) : _) =
     RawBlock (Format "tex") ("\\setcounter{page}{" ++ show (n - 1) ++ "}")
     : (drop 1 $ foldr step [] ps) -- drop first \\pagebreak
