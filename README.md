@@ -49,4 +49,5 @@ To build and install, first
 ## Bugs
 
 Please report bugs by e-mail to `<spwhitton@spwhitton.name>` or
-`<spwhitton@email.arizona.edu>`.
+`<spwhitton@email.arizona.edu>`.  I'd also appreciate hearing from you
+if this program has been useful to you.
