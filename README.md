@@ -6,7 +6,8 @@ This computer program attempts to convert book chapters downloaded
 from [Oxford Scholarship Online](http://www.oxfordscholarship.com/) to
 PDF.  The PDFs are better than those the OSO website can generate: the
 pages of the PDF correspond to the pages of the original book, and the
-typography is nicer.
+typography is nicer.  The hard work is done by
+[Pandoc](http://pandoc.org/) and LaTeX.
 
 **N.B.** This software is of use only to someone who has legitimate
 access to Oxford Scholarship Online and has already downloaded a book
