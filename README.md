@@ -29,16 +29,24 @@ conversion; the default setting is
 
     $ oso2pdf --font="Liberation Serif" my_chapter.html
 
+You may pass additional arguments to pandoc like this:
+
+    $ oso2pdf --font="Times New Roman" my_chapter.html -- -V documentclass=pessay -V classoption=onehalf --template=pessay
+
+In this example Pandoc is instructed to make use of the files
+[~/.pandoc/templates/pessay.latex](https://github.com/spwhitton/dotfiles/blob/master/.pandoc/templates/pessay.latex)
+and
+[~/texmf/tex/latex/pessay/pessay.cls](https://github.com/spwhitton/dotfiles/blob/master/texmf/tex/latex/pessay/pessay.cls).
+Indeed, any arguments passed after `--` will be ignored by oso2pdf and
+handed on to invocations of Pandoc.
+
 ## Installation
 
 Runtime dependencies:
 
-- a working installation of pandoc
+- a working installation of Pandoc
 - a working LaTeX installation, including XeLaTeX
 - some XeLaTeX-compatible font, such as Liberation Serif
-- my
-  [~/.pandoc/templates/pessay.latex](https://github.com/spwhitton/dotfiles/blob/master/.pandoc/templates/pessay.latex)
-- my [~/texmf/tex/latex/pessay/pessay.cls](https://github.com/spwhitton/dotfiles/blob/master/texmf/tex/latex/pessay/pessay.cls)
 
 To build and install, first
 [install stack](https://github.com/commercialhaskell/stack), and then

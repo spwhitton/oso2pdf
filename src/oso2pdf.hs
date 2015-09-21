@@ -23,23 +23,25 @@
 
 {-# LANGUAGE TemplateHaskell #-}
 
-import           Control.Lens        hiding (argument)
-import           Control.Monad       (when)
-import           Data.List           (isInfixOf)
+import           Control.Lens         hiding (argument)
+import           Control.Monad        (when)
+import           Control.Monad.Reader
+import           Data.List            (isInfixOf)
 import           Options.Applicative
-import           System.Directory    (findExecutable)
-import           System.Exit         (die)
-import           System.FilePath     (takeBaseName, (</>))
+import           System.Directory     (findExecutable)
+import           System.Exit          (die)
+import           System.FilePath      (takeBaseName, (</>))
 import           System.IO.Temp
 import           System.Process
 
-data Opts = Opts { _font :: String, _input :: FilePath }
+data Opts = Opts { _font :: String, _input :: FilePath, _pandocArgs :: [String] }
 makeLenses ''Opts
 
 optsParser :: Parser Opts
 optsParser = Opts
              <$> strOption    (long "font" <> metavar "FONT" <> value "Liberation Serif")
              <*> argument str (metavar "INPUT")
+             <*> many (argument str (metavar "PANDOC_ARGS..."))
 
 narrowToContent      :: String -> (String, String, String)
 narrowToContent full = (body, notes ++ "</div></div>", footer)
@@ -68,34 +70,36 @@ main = do
 
     opts <- execParser $ info optsParser mempty
 
+    runReaderT oso2pdf opts
+
+oso2pdf :: ReaderT Opts IO ()
+oso2pdf = ask >>= \opts -> do
+
     -- 3. get HTML content
 
-    (body, notes, footer) <- narrowToContent <$> readFile (opts ^. input)
+    (body, notes, footer) <- narrowToContent <$> (liftIO . readFile) (opts ^. input)
 
     -- 4. go go go
 
-    let contentFile = (takeBaseName $ opts ^. input) ++ "-content.pdf"
-    let notesFile = (takeBaseName $ opts ^. input) ++ "-notes.pdf"
-    withSystemTempDirectory "oso2pdf" $ \dir -> do
-        writeFile (dir </> "content.html") (body ++ footer)
-        writeFile (dir </> "notes.html") (notes ++ footer)
-        runPandoc (dir </> "content.html") contentFile (opts ^. font)
-        runPandoc (dir </> "notes.html") notesFile (opts ^. font)
+    let basename = (takeBaseName $ opts ^. input)
+        contentFile =  basename ++ "-content.pdf"
+        notesFile = basename ++ "-notes.pdf"
 
-runPandoc                   :: String -> String -> String -> IO ()
-runPandoc input output font = do
-    readProcess "pandoc" [ "-s"
-                         , input
-                         , "--filter"
-                         , "pandoc-oso2tex"
-                         , "--variable"
-                         , "mainfont=" ++ font
-                         , "--latex-engine=xelatex"
-                         , "-V"
-                         , "documentclass=pessay"
-                         , "-V"
-                         , "classoption=onehalf"
-                         , "--template=pessay"
-                         , "-o"
-                         , output] ""
-    return ()
+    withSystemTempDirectory "oso2pdf" $ \dir -> do
+        liftIO $ writeFile (dir </> "content.html") (body  ++ footer)
+        liftIO $ writeFile (dir </> "notes.html")   (notes ++ footer)
+        runPandoc (dir </> "content.html") contentFile
+        runPandoc (dir </> "notes.html") notesFile
+
+runPandoc              :: String -> String -> ReaderT Opts IO ()
+runPandoc input output = ask >>= \opts -> do
+    liftIO $ readProcess "pandoc" ([ "-s"
+                                   , input
+                                   , "--filter"
+                                   , "pandoc-oso2tex"
+                                   , "--variable"
+                                   , "mainfont=" ++ (opts ^. font)
+                                   , "--latex-engine=xelatex"
+                                   , "-o"
+                                   , output] ++ (opts ^. pandocArgs)) ""
+    pure ()
